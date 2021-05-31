@@ -191,7 +191,7 @@ class Panel : Frame
                         if(event.type == Event::Closed) window.close();
                     }
                 }
-                
+                //game gets reset
                 snake.SnakeReset();
                 gameover = false;               
             }
