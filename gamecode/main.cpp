@@ -181,7 +181,7 @@ class Panel : Frame
                     checkCollision(); //check for collisions
 
                     window.clear();
-
+                    //rendering here
                     redraw();
 
                     window.display();
