@@ -64,6 +64,17 @@ class Snake : Frame
         {
             return apple;
         }
+        
+        void SnakeReset()
+        {
+            //reset the snake here.
+            velocity.first = 25;
+            velocity.second = 0;
+            snakelength = 0;
+            pos.clear();
+            pos.push_back(make_pair(WINDOW_HEIGHT/2,WINDOW_WIDTH/2));
+
+        }
 
         void eatApple()
         {
@@ -138,44 +149,51 @@ class Panel : Frame
         {
             window.create(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Snake");
             
-            while(window.isOpen() && !gameover)
+            while(window.isOpen())
             {
-                sleep(milliseconds(100));               
+                while(!gameover)
+                {
+                    sleep(milliseconds(100));               
 
-                //get player input
-                if(Keyboard::isKeyPressed(Keyboard::Up)) 
-                {
-                  snake.velocity.first = 0;
-                  snake.velocity.second = -25;
-                }
-                if(Keyboard::isKeyPressed(Keyboard::Down)) 
-                {
-                  snake.velocity.first = 0;
-                  snake.velocity.second = 25;
-                }
-                if(Keyboard::isKeyPressed(Keyboard::Right)) 
-                {
-                  snake.velocity.first = 25;
-                  snake.velocity.second = 0;
-                }
-                if(Keyboard::isKeyPressed(Keyboard::Left)) 
-                {
-                  snake.velocity.first = -25;
-                  snake.velocity.second = 0;
+                    //get player input
+                    if(Keyboard::isKeyPressed(Keyboard::Up)) 
+                    {
+                        snake.velocity.first = 0;
+                        snake.velocity.second = -25;
+                    }
+                    if(Keyboard::isKeyPressed(Keyboard::Down)) 
+                    {
+                        snake.velocity.first = 0;
+                        snake.velocity.second = 25;
+                    }
+                    if(Keyboard::isKeyPressed(Keyboard::Right)) 
+                    {
+                        snake.velocity.first = 25;
+                        snake.velocity.second = 0;
+                    }
+                    if(Keyboard::isKeyPressed(Keyboard::Left)) 
+                    {
+                        snake.velocity.first = -25;
+                        snake.velocity.second = 0;
+                    }
+                    
+                    move(); //move the snake
+                    checkCollision(); //check for collisions
+
+                    window.clear();
+
+                    redraw();
+
+                    window.display();
+
+                    while(window.pollEvent(Frame::Frame::event))
+                    {
+                        if(event.type == Event::Closed) window.close();
+                    }
                 }
                 
-                move(); //move the snake
-                checkCollision(); //check for collisions
-                window.clear();
-
-                redraw();
-
-                window.display();
-
-                while(window.pollEvent(Frame::Frame::event))
-                {
-                    if(event.type == Event::Closed) window.close();
-                }
+                snake.SnakeReset();
+                gameover = false;               
             }
         }
 };
