@@ -2,6 +2,7 @@
 *.d
 lib
 include
+snake
 
 # Compiled Object files
 *.slo
