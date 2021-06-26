@@ -186,7 +186,7 @@ class Panel : Frame
 
                     window.display();
 
-                    while(window.pollEvent(Frame::Frame::event))
+                    while(window.pollEvent(Frame::Frame::event)) //close window
                     {
                         if(event.type == Event::Closed) window.close();
                     }
