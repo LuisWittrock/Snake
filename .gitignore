@@ -1,5 +1,7 @@
 # Prerequisites
 *.d
+lib
+include
 
 # Compiled Object files
 *.slo
