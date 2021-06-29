@@ -112,6 +112,7 @@ class Panel : Frame
     public:
         Snake snake;
         bool gameover = false;
+        Clock clock;
         Panel panel()
         {
             snake.spawnApple();
@@ -127,7 +128,7 @@ class Panel : Frame
             {
                 if(snake.getSnakePos() == snake.pos[i]) gameover = true;
             }
-            if(snake.getSnakePos().first < 0 || snake.getSnakePos().first > WINDOW_WIDTH || snake.getSnakePos().second < 0 || snake.getSnakePos().second > WINDOW_HEIGHT) gameover = true;
+            if(snake.getSnakePos().first < 0 || snake.getSnakePos().first >= WINDOW_WIDTH || snake.getSnakePos().second < 0 || snake.getSnakePos().second >= WINDOW_HEIGHT) gameover = true;
         }
 
         void move()
@@ -148,12 +149,11 @@ class Panel : Frame
         void drawWindow()
         {
             window.create(VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "Snake");
-            
+            clock.restart();
             while(window.isOpen())
             {
                 while(!gameover)
-                {
-                    sleep(milliseconds(100));               
+                {               
 
                     //get player input
                     if(Keyboard::isKeyPressed(Keyboard::Up)) 
@@ -176,15 +176,20 @@ class Panel : Frame
                         snake.velocity.first = -25;
                         snake.velocity.second = 0;
                     }
+                    Time elapsed = clock.getElapsedTime();
+                    if(elapsed.asSeconds() >= 0.1)
+                    {
+                        move(); //move the snake
+                        checkCollision(); //check for collisions
+
+                        window.clear();
+                        //rendering here
+                        redraw();
+
+                        window.display();
+                        clock.restart();
+                    }
                     
-                    move(); //move the snake
-                    checkCollision(); //check for collisions
-
-                    window.clear();
-                    //rendering here
-                    redraw();
-
-                    window.display();
 
                     while(window.pollEvent(Frame::Frame::event)) //close window
                     {
